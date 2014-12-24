@@ -25,7 +25,7 @@ The managers go to the /manager portion of the site.  They have the ability to s
 1) Manager logs into /manager
 2) Current player, player owner, player price, your bid price, bid button, bump bid button, current balance.
 3) Manager bumps the bid until its greater than the current price and hits bid button
-4) If transaction goes through, the server deducts from player balance, sets the new price on the player and pushes the new details to clients: player name, current bid, current owner
+4) If transaction goes through, the server deducts from player balance, sets the new price on the player and pushes the new details to clients: player name, current bid, current owner.
 5) If the transaction falls through, bid fails and the manager is notified
 
 Transactions can fall through for a number of reasons.  Perhaps another manager made the bid first or the bidding manager doesn't have a sufficient balance for the bid.  The bid could also have not been made in the allotted time.
@@ -36,6 +36,7 @@ The general audience can view some information about the current auction: The cu
 
 
 ### Future considerations
+
 * Ability to see other manager balances
 * Ability to see other manager rosters
-* 
+* Add a timer to speed up the bidding process.  When a bid is made, it bumps the timer back.
