@@ -1,0 +1,128 @@
+<!doctype html>
+<html>
+<head>
+  <title>Fantasy Auction - Manager</title>
+  <style>
+    html{
+      background: url(img/desean-jackson.png) no-repeat center center fixed;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+      background-color: #000; 
+    }
+    body{
+      font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+      font-weight: 300;
+    }
+    .player-name{
+      color: #fff;
+      text-align: right;
+      margin-top: 60px;
+      font-size: 28px;
+      padding: 5px 20px;
+      background: -moz-linear-gradient(left, rgba(0,0,0,0) 0%, rgba(0,0,0,0.65) 50%); /* FF3.6+ */
+      background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(0,0,0,0)), color-stop(50%,rgba(0,0,0,0.65))); /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(left, rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 50%); /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(left, rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 50%); /* Opera 11.10+ */
+      background: -ms-linear-gradient(left, rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 50%); /* IE10+ */
+      background: linear-gradient(to right, rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 50%); /* W3C */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#a6000000',GradientType=1 ); /* IE6-9 */
+    }
+    .auction-info{
+      margin: 10px 0;
+    }
+    .player-name > h1 {
+      font-style: italic;
+      font-weight: 300;
+      font-size: 72px;
+      margin: 5px 0;
+      letter-spacing: .05em;
+    }
+    .current-manager, .current-price {
+      font-weight: 600;
+      margin: 0 20px;
+      display: inline-block;
+    }
+    .current-value {
+      font-weight: normal;
+    }
+    .current-value.positive{
+      color: #028E22;
+    }
+    .current-value.negative{
+      color: #AB0000;
+    }
+    .current-bid{
+      position: absolute;
+      height: 300px;
+      width: 450px;
+      margin-top: -150px;
+      margin-left: -225px;
+      top: 50%;
+      left: 50%;
+      text-align: center;
+    }
+    .current-bid > .current-value{
+      text-align: center;
+      font-size: 200px;
+      margin: 40px 0;
+      cursor: pointer;
+    }
+    .current-bid > button{
+      border-radius: 25px;
+      border: 2px solid #fff;
+      background: none;
+      color: #fff;
+      padding: 15px 80px;
+      font-size: 64px;
+    }
+    .arrow-up{
+      width: 0; 
+      height: 0; 
+      position: absolute;
+      top: 87px;
+      right: 45px;
+      border-left: 20px solid transparent;
+      border-right: 20px solid transparent;
+      
+      border-bottom: 40px solid #C3CD00;
+      float: right;
+      cursor: pointer;
+    }
+    .notification{
+      position: fixed;
+      top: 95%;
+      height: 30px;
+      font-size: 36px;
+      left: 30px;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="player-name">
+    <h1>DeSean Jackson</h1>
+    <div class="auction-info">
+      <div class="current-manager">
+        Current Manager:
+        <span class="current-value positive">You</span>
+      </div>
+      <div class="current-price">
+        Price:   
+        <span class="current-value positive">18</span>
+      </div>
+    </div>
+  </div>
+  <div class="current-bid">
+    <div class="current-value positive">18</div>
+    <span class="arrow-up"></span>
+    <button class="bid-button">Bid Now</button>
+  </div>
+  <div class="notification">
+    <div class="current-value negative">
+      You were outbid by Bobby!
+    </div>
+  </div>
+</body>
+</html>
