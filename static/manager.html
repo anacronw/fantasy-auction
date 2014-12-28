@@ -145,19 +145,16 @@
         // server-side events
         self.onConnect = function(me, player, price, manager){
           myName = me;
-          self.onPlayerChange(player, price, manager);
-        };
-        self.onPlayerChange = function(player, price, manager){
-          myBid = price;
-          playerPrice = price;
-          currentPlayer = player;
-          
-          document.querySelector('.player-name > h1').innerHTML = player;
-          updatePlayer(player, price, manager);
-          updateMyBid(price);
-          // todo: update the background
+          self.onPlayerUpdate(player, price, manager);
         };
         self.onPlayerUpdate = function(player, price, manager){
+          var playerChanged = (currentPlayer !== player);
+          if (playerChanged){
+            myBid = price; // set the default starting bid
+            currentPlayer = player;
+            document.querySelector('.player-name > h1').innerHTML = player;
+            // todo: update the background
+          }
           playerPrice = price;
           updatePlayer(player, price, manager);
           updateMyBid(myBid, manager);
