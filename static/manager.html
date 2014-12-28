@@ -11,6 +11,9 @@
       background-size: cover;
       background-color: #000; 
     }
+    :focus{
+      outline: none;
+    }
     body{
       font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
       font-weight: 300;
@@ -46,12 +49,13 @@
     }
     .current-value {
       font-weight: normal;
+      color: #AB0000;
     }
     .current-value.positive{
       color: #028E22;
     }
-    .current-value.negative{
-      color: #AB0000;
+    .current-value.pending{
+      color: #C3CD00;
     }
     .current-bid{
       position: absolute;
@@ -91,14 +95,21 @@
       cursor: pointer;
     }
     .notification{
+      color: #fff;
       position: fixed;
       top: 95%;
       height: 30px;
       font-size: 36px;
       left: 30px;
       font-style: italic;
+      display: none;
+    }
+    button[disabled]{
+      border: 2px #333 solid;
+      color: #333;
     }
   </style>
+  
 </head>
 <body>
   <div class="player-name">
@@ -120,9 +131,85 @@
     <button class="bid-button">Bid Now</button>
   </div>
   <div class="notification">
-    <div class="current-value negative">
-      You were outbid by Bobby!
-    </div>
+    You were outbid by Bobby!
   </div>
+  <script>
+    (function(global){
+      global.auction = global.auction || new function(){
+        var self = this;
+        var myName = '';
+        var myBid = 0;
+        var currentPlayer = '';
+        var playerPrice = 0;
+        
+        // server-side events
+        self.onConnect = function(me, player, price, manager){
+          myName = me;
+          self.onPlayerChange(player, price, manager);
+        };
+        self.onPlayerChange = function(player, price, manager){
+          myBid = price;
+          playerPrice = price;
+          currentPlayer = player;
+          
+          document.querySelector('.player-name > h1').innerHTML = player;
+          updatePlayer(player, price, manager);
+          updateMyBid(price);
+          // todo: update the background
+        };
+        self.onPlayerUpdate = function(player, price, manager){
+          playerPrice = price;
+          updatePlayer(player, price, manager);
+          updateMyBid(myBid, manager);
+        };
+        
+        // client-side events
+        self.onBidRaised = function(){
+          updateMyBid(++myBid);
+        };
+        self.onBidCommited = function(){
+          // todo: send myBid and player through web socket
+          console.log('execute this to simulate server response: ');
+          console.log('auction.onPlayerUpdate("' + currentPlayer + '", ' + myBid + ', "' + myName +'")');
+        };
+        
+        var updatePlayer = function(player, price, manager){
+          var myPlayer = manager === myName;
+          var $currentValues = document.querySelectorAll('.current-value');
+          var $managerElement = document.querySelector('.current-manager .current-value');
+          var $priceElement = document.querySelector('.current-price .current-value');
+          
+          $managerElement.innerHTML = (myPlayer ? 'You' : manager);
+          $priceElement.innerHTML = price;
+          
+          var classOp = myPlayer ? 'add' : 'remove'
+          for (var i = 0; i < $currentValues.length; i++){
+            $currentValues[i].classList[classOp]('positive');
+          }
+        };
+        var updateMyBid = function(price, manager){
+          var myPlayer = manager === myName;
+          var $priceElement = document.querySelector('.current-bid .current-value');
+          var $bidButton = document.querySelector('.bid-button');
+          if (myBid > playerPrice){
+            $priceElement.classList.add('pending');
+            $bidButton.disabled = false;
+          } else{
+            $priceElement.classList.remove('pending');
+            $bidButton.disabled = true;
+          }
+          $priceElement.innerHTML = price;
+        }
+      };
+    })(window);
+    // attach event handlers
+    document.querySelector('.current-bid .current-value').addEventListener('click', window.auction.onBidRaised);
+    document.querySelector('.current-bid .arrow-up').addEventListener('click', window.auction.onBidRaised);
+    document.querySelector('.current-bid .bid-button').addEventListener('click', window.auction.onBidCommited);
+    
+    // todo: perhaps we need a loading screen before we receive onConnect
+    // bootstrap some values
+    window.auction.onConnect('Joseph', 'DeSean Jackson', 18, 'Bobby');
+  </script>
 </body>
 </html>
