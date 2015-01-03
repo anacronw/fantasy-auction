@@ -2,14 +2,13 @@
 <html>
 <head>
   <title>Fantasy Auction - Manager</title>
+  <link rel="stylesheet" href="css/animate.css" />
   <style>
     html{
-      background: url(img/desean-jackson.png) no-repeat center center fixed;
       -webkit-background-size: cover;
       -moz-background-size: cover;
       -o-background-size: cover;
       background-size: cover;
-      background-color: #000; 
     }
     :focus{
       outline: none;
@@ -18,6 +17,17 @@
       font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
       font-weight: 300;
     }
+    .background{
+      background-color: #000; 
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      opacity: .8;  
+      z-index: -1;
+    }
+    
     .player-name{
       color: #fff;
       text-align: right;
@@ -66,6 +76,13 @@
       top: 50%;
       left: 50%;
       text-align: center;
+      -webkit-user-select: none; /* Chrome/Safari */        
+      -moz-user-select: none; /* Firefox */
+      -ms-user-select: none; /* IE10+ */
+      
+      /* Rules below not implemented in browsers yet */
+      -o-user-select: none;
+      user-select: none;
     }
     .current-bid > .current-value{
       text-align: center;
@@ -80,6 +97,7 @@
       color: #fff;
       padding: 15px 80px;
       font-size: 64px;
+      cursor: pointer;
     }
     .arrow-up{
       width: 0; 
@@ -112,6 +130,7 @@
   
 </head>
 <body>
+  <div class="background"></div>
   <div class="player-name">
     <h1>DeSean Jackson</h1>
     <div class="auction-info">
@@ -153,7 +172,8 @@
             myBid = price; // set the default starting bid
             currentPlayer = player;
             document.querySelector('.player-name > h1').innerHTML = player;
-            // todo: update the background
+            document.querySelector('html').style.background = 'url(img/' + normalizeName(player) + '.jpg) no-repeat center center fixed';
+            document.querySelector('html').style.backgroundSize = 'cover';
           }
           playerPrice = price;
           updatePlayer(player, price, manager);
@@ -197,6 +217,9 @@
           }
           $priceElement.innerHTML = price;
         }
+        var normalizeName = function(playerName){
+          return playerName.toLowerCase().trim().replace(' ','-');
+        };
       };
     })(window);
     // attach event handlers
